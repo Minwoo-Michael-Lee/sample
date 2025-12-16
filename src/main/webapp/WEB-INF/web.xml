@@ -71,15 +71,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>EvaluationServlet</servlet-name>
-        <servlet-class>com.neis.servlet.EvaluationServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>EvaluationServlet</servlet-name>
-        <url-pattern>/api/evaluation</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>GradeTrendServlet</servlet-name>
         <servlet-class>com.neis.servlet.GradeTrendServlet</servlet-class>
     </servlet>
