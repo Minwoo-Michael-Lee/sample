@@ -60,6 +60,24 @@
         <servlet-name>AttendanceServlet</servlet-name>
         <url-pattern>/api/attendance</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VolunteerServlet</servlet-name>
+        <servlet-class>com.neis.servlet.VolunteerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VolunteerServlet</servlet-name>
+        <url-pattern>/api/volunteer</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EvaluationServlet</servlet-name>
+        <servlet-class>com.neis.servlet.EvaluationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EvaluationServlet</servlet-name>
+        <url-pattern>/api/evaluation</url-pattern>
+    </servlet-mapping>
     
     <!-- Error Pages -->
     <error-page>
