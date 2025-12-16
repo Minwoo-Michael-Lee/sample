@@ -87,6 +87,24 @@
         <servlet-name>StandardScoreServlet</servlet-name>
         <url-pattern>/api/standard-score</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CollegeApplyServlet</servlet-name>
+        <servlet-class>com.neis.servlet.CollegeApplyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CollegeApplyServlet</servlet-name>
+        <url-pattern>/api/college-apply</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CollegeReceiveStatusServlet</servlet-name>
+        <servlet-class>com.neis.servlet.CollegeReceiveStatusServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CollegeReceiveStatusServlet</servlet-name>
+        <url-pattern>/api/college-receive-status</url-pattern>
+    </servlet-mapping>
     
     <!-- Error Pages -->
     <error-page>
