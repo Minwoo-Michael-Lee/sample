@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성적변화표 - 나이스 대국민 학부모서비스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #e4f0ff 0%, #c8e1ff 100%);
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        .page-header h1 { font-size: 2rem; color: #333; margin-bottom: 10px; }
+        .page-header p { color: #666; font-size: 1rem; }
+
+        .content-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .filter-row input {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            min-width: 260px;
+        }
+        .btn {
+            padding: 10px 16px;
+            background: #4176e9;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .btn:hover { background: #2d5aa0; }
+
+        .muted { color: #777; font-size: 0.9rem; }
+        .error { color: #c0392b; font-weight: 700; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #e0e0e0; padding: 12px; text-align: left; }
+        th { background: #f8f9fa; color: #333; }
+
+        .bar-wrap { display: flex; align-items: center; gap: 10px; }
+        .bar {
+            height: 10px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #4176e9, #6aa9ff);
+            width: 0%;
+            min-width: 0;
+        }
+        .bar-label { min-width: 64px; font-weight: 700; color: #333; }
+    </style>
+</head>
+<body>
+    <!-- Header (메인과 동일 톤) -->
+    <header>
+        <div class="header-top">
+            <div class="container">
+                <div class="header-inner">
+                    <a href="index.html" class="logo">나이스 대국민 학부모서비스</a>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <div class="container">
+                <nav class="primary-nav" aria-label="주요 메뉴">
+                    <ul class="primary-nav-list">
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">학교정보</button>
+                            <div class="primary-dropdown" role="menu" aria-label="학교정보 메뉴">
+                                <a href="school-info.html" role="menuitem">학교기본정보</a>
+                                <a href="school-diet.html" role="menuitem">주간식단</a>
+                            </div>
+                        </li>
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">학교생활기록부</button>
+                            <div class="primary-dropdown" role="menu" aria-label="학교생활기록부 메뉴">
+                                <a href="student-record.html" role="menuitem">조회</a>
+                                <a href="student-attendance.html" role="menuitem">출결상황</a>
+                                <a href="student-volunteer.html" role="menuitem">봉사활동실적</a>
+                            </div>
+                        </li>
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">자녀평가</button>
+                            <div class="primary-dropdown" role="menu" aria-label="자녀평가 메뉴">
+                                <a href="child-evaluation.html" role="menuitem">자녀평가(요약)</a>
+                                <a href="student-grades.html" role="menuitem">성적표</a>
+                                <a href="student-grade-trend.html" role="menuitem">성적변화표</a>
+                                <a href="student-standard-score.html" role="menuitem">표준점수분석표</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <a href="index.html" class="back-link">← 메인으로</a>
+            <h1>성적변화표</h1>
+            <p>시험/학기 구분값(type)을 시간축으로 보고 평균 성적 변화를 확인합니다.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="content-section">
+            <div class="filter-row">
+                <input id="studentId" placeholder="studentId (예: S0000000000000000001)" />
+                <button class="btn" id="btnLoad">조회</button>
+            </div>
+            <div class="muted">
+                참고: 현재 스키마(`gradesTB`)에는 날짜 컬럼이 없어, `type`을 기간/회차 개념으로 사용합니다.
+            </div>
+            <div id="status" class="muted" style="margin-top:10px;">studentId를 입력하고 조회하세요.</div>
+            <div style="margin-top: 12px; overflow:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:120px;">type</th>
+                            <th style="width:160px;">평균 성적</th>
+                            <th style="width:120px;">과목 수</th>
+                            <th>시각화</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function qs(name) { return new URLSearchParams(location.search).get(name) || ''; }
+        const $studentId = document.getElementById('studentId');
+        const $status = document.getElementById('status');
+        const $tbody = document.getElementById('tbody');
+
+        $studentId.value = qs('studentId');
+
+        function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+        async function load() {
+            const studentId = $studentId.value.trim();
+            if (!studentId) {
+                $status.className = 'error';
+                $status.textContent = 'studentId는 필수입니다.';
+                return;
+            }
+            $status.className = 'muted';
+            $status.textContent = '조회 중...';
+            $tbody.innerHTML = '';
+
+            const res = await fetch('api/grade-trend?studentId=' + encodeURIComponent(studentId));
+            const data = await res.json();
+            if (!data.ok) {
+                $status.className = 'error';
+                $status.textContent = data.message || '조회 실패';
+                return;
+            }
+            const rows = data.rows || [];
+            $status.className = 'muted';
+            $status.textContent = `조회 완료: ${rows.length}개 구간(type)`;
+
+            if (rows.length === 0) {
+                $tbody.innerHTML = '<tr><td colspan="4" class="muted">데이터가 없습니다.</td></tr>';
+                return;
+            }
+
+            // 단순 막대: avgGrade를 0~100 스케일로 가정해 표시(필요시 조정)
+            $tbody.innerHTML = rows.map(r => {
+                const avg = Number(r.avgGrade || 0);
+                const pct = clamp(avg, 0, 100);
+                return `
+                    <tr>
+                        <td><span class="bar-label">${r.type}</span></td>
+                        <td>${avg.toFixed(2)}</td>
+                        <td>${r.count}</td>
+                        <td>
+                            <div class="bar-wrap">
+                                <div class="bar" style="width:${pct}%;"></div>
+                                <span class="muted">${pct.toFixed(0)}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('btnLoad').addEventListener('click', load);
+    </script>
+</body>
+</html>
+
+
