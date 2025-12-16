@@ -87,6 +87,15 @@
         <servlet-name>GradeTrendServlet</servlet-name>
         <url-pattern>/api/grade-trend</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>StandardScoreServlet</servlet-name>
+        <servlet-class>com.neis.servlet.StandardScoreServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StandardScoreServlet</servlet-name>
+        <url-pattern>/api/standard-score</url-pattern>
+    </servlet-mapping>
     
     <!-- Error Pages -->
     <error-page>
