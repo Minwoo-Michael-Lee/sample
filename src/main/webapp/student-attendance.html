@@ -153,8 +153,17 @@
             if ($from.value.trim()) params.set('from', $from.value.trim());
             if ($to.value.trim()) params.set('to', $to.value.trim());
 
-            const res = await fetch('api/attendance?' + params.toString());
-            const data = await res.json();
+            let data;
+            try {
+                const res = await fetch('api/attendance?' + params.toString());
+                try {
+                    data = await res.json();
+                } catch (e) {
+                    data = { ok: false, message: `서버 응답이 JSON이 아닙니다. (HTTP ${res.status})` };
+                }
+            } catch (e) {
+                data = { ok: false, message: `네트워크 오류: ${e.message || e}` };
+            }
             if (!data.ok) {
                 $status.className = 'error';
                 $status.textContent = data.message || '조회 실패';
