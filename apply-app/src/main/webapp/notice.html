@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>공지사항 - 대입지원</title>
+  <link rel="stylesheet" href="css/apply.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="brand-title" href="index.html">대입지원용 학교생활기록부 신청 서비스</a>
+        <div class="top-actions">
+          <button class="btn-login" type="button" onclick="location.href='login.html'">로그인</button>
+          <button class="dots" type="button" aria-label="전체 메뉴(미구현)"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="메인 메뉴">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a class="nav-link" data-nav="intro" href="index.html">서비스 소개</a></li>
+        <li><a class="nav-link" data-nav="notice" href="notice.html">공지사항</a></li>
+        <li><a class="nav-link" data-nav="apply" href="college-apply.html">자료생성 및 신청</a></li>
+        <li><a class="nav-link" data-nav="status" href="college-receive-status.html">대학별 수신 현황</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-wrap">
+    <div class="container">
+      <div class="panel">
+        <h1 style="margin:0 0 6px; font-size:22px; font-weight:900;">공지사항</h1>
+        <div style="color:var(--muted); font-weight:800;">(샘플) 실제 공지 데이터 연동은 필요 시 API로 확장 가능합니다.</div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>제목</th>
+                <th style="width:140px;">등록일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>예시 공지: 서비스 이용 안내</td>
+                <td>2025.12.16</td>
+              </tr>
+              <tr>
+                <td>예시 공지: 자료생성 신청 절차</td>
+                <td>2025.12.10</td>
+              </tr>
+              <tr>
+                <td>예시 공지: FAQ 업데이트</td>
+                <td>2025.11.20</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/apply.js"></script>
+  <script>setActiveNav('notice');</script>
+</body>
+</html>
+
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - 서버 오류</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .wrap { min-height: 70vh; display:flex; align-items:center; justify-content:center; padding: 40px 20px; }
+        .box { background:#fff; border-radius:14px; padding:32px; max-width:720px; width:100%; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+        .title { font-size:1.6rem; font-weight:800; color:#333; }
+        .desc { margin-top:10px; color:#666; line-height:1.6; }
+        .hint { margin-top:12px; padding:12px 14px; background:#f8f9fa; border:1px solid #eee; border-radius:10px; color:#555; font-size:0.95rem; }
+        .actions { margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; }
+        .btn { padding:10px 14px; background:#4176e9; color:#fff; border:none; border-radius:8px; text-decoration:none; font-weight:700; }
+        .btn.secondary { background:#f3f4f6; color:#333; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <div class="container">
+                <div class="header-inner">
+                    <a href="../index.html" class="logo">나이스 대국민 학부모서비스</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrap">
+        <div class="box">
+            <div class="title">일시적인 서버 오류가 발생했습니다. (500)</div>
+            <div class="desc">
+                잠시 후 다시 시도해 주세요. 문제가 계속되면 서버 로그를 확인해야 합니다.
+            </div>
+            <div class="hint">
+                인턴 체크: Tomcat <b>logs/</b>에서 <b>catalina.*.log</b> 또는 <b>localhost.*.log</b>를 확인하세요.
+            </div>
+            <div class="actions">
+                <a class="btn" href="../index.html">메인으로</a>
+                <a class="btn secondary" href="javascript:location.reload()">새로고침</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

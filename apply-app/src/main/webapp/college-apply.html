@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자료생성 및 신청 - 대입지원</title>
+  <link rel="stylesheet" href="css/apply.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="brand-title" href="index.html">대입지원용 학교생활기록부 신청 서비스</a>
+        <div class="top-actions">
+          <button class="btn-login" type="button" onclick="location.href='login.html'">로그인</button>
+          <button class="dots" type="button" aria-label="전체 메뉴(미구현)"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="메인 메뉴">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a class="nav-link" data-nav="intro" href="index.html">서비스 소개</a></li>
+        <li><a class="nav-link" data-nav="notice" href="notice.html">공지사항</a></li>
+        <li><a class="nav-link" data-nav="apply" href="college-apply.html">자료생성 및 신청</a></li>
+        <li><a class="nav-link" data-nav="status" href="college-receive-status.html">대학별 수신 현황</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-wrap">
+    <div class="container">
+      <div class="panel">
+        <h1 style="margin:0 0 6px; font-size:22px; font-weight:900;">자료생성 및 신청</h1>
+        <div style="color:var(--muted); font-weight:800;">studentId 기준으로 신청 이력을 조회하고, 신규 신청을 생성합니다.</div>
+
+        <div style="margin-top:14px;">
+          <div class="form-row">
+            <input id="studentId" placeholder="studentId (예: S0000000000000000001)" />
+            <select id="type">
+              <option value="1">type=1 (예시)</option>
+              <option value="2">type=2 (예시)</option>
+            </select>
+            <input id="graduate" type="date" />
+            <button class="btn" id="btnApply" type="button">신청</button>
+            <button class="btn secondary" id="btnLoad" type="button">조회</button>
+          </div>
+          <div id="status" class="status">studentId 입력 후 조회/신청하세요.</div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:80px;">type</th>
+                <th style="width:120px;">졸업일</th>
+                <th style="width:80px;">state</th>
+                <th style="width:120px;">신청일</th>
+                <th style="width:170px;">provide_code</th>
+                <th>최종생성일</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/apply.js"></script>
+  <script>
+    setActiveNav('apply');
+    function qs(name){ return new URLSearchParams(location.search).get(name) || ''; }
+
+    const $studentId = document.getElementById('studentId');
+    const $type = document.getElementById('type');
+    const $graduate = document.getElementById('graduate');
+    const $status = document.getElementById('status');
+    const $tbody = document.getElementById('tbody');
+
+    $studentId.value = qs('studentId');
+
+    async function load(){
+      const studentId = $studentId.value.trim();
+      if(!studentId){ $status.className='status error'; $status.textContent='studentId는 필수입니다.'; return; }
+      $status.className='status'; $status.textContent='조회 중...';
+      $tbody.innerHTML='';
+
+      const data = await fetchJsonSafe('api/college-apply?studentId=' + encodeURIComponent(studentId));
+      if(!data.ok){ $status.className='status error'; $status.textContent=data.message || '조회 실패'; return; }
+      const rows = data.rows || [];
+      $status.className='status'; $status.textContent=`조회 완료: ${rows.length}건`;
+      if(rows.length===0){ $tbody.innerHTML='<tr><td colspan="6" style="color:var(--muted); font-weight:800;">데이터가 없습니다.</td></tr>'; return; }
+      $tbody.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.type}</td>
+          <td>${r.graduate || '-'}</td>
+          <td>${r.state}</td>
+          <td>${r.regDate || '-'}</td>
+          <td>${r.provideCode || '-'}</td>
+          <td style="color:var(--muted); font-weight:800;">${r.finalGenDate || '-'}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function apply(){
+      const studentId = $studentId.value.trim();
+      const type = $type.value;
+      const graduate = $graduate.value;
+      if(!studentId){ $status.className='status error'; $status.textContent='studentId는 필수입니다.'; return; }
+      if(!graduate){ $status.className='status error'; $status.textContent='졸업일(graduate)은 필수입니다.'; return; }
+      $status.className='status'; $status.textContent='신청 중...';
+
+      const body = new URLSearchParams({ studentId, type, graduate }).toString();
+      const data = await fetchJsonSafe('api/college-apply', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
+        body
+      });
+      if(!data.ok){ $status.className='status error'; $status.textContent=data.message || '신청 실패'; return; }
+      $status.className='status';
+      $status.textContent=`신청 완료: provide_code=${data.provideCode}`;
+      await load();
+    }
+
+    document.getElementById('btnLoad').addEventListener('click', load);
+    document.getElementById('btnApply').addEventListener('click', apply);
+  </script>
+</body>
+</html>
+
+

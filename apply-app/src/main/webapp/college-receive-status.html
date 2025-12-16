@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대학별 수신 현황 - 대입지원</title>
+  <link rel="stylesheet" href="css/apply.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="brand-title" href="index.html">대입지원용 학교생활기록부 신청 서비스</a>
+        <div class="top-actions">
+          <button class="btn-login" type="button" onclick="location.href='login.html'">로그인</button>
+          <button class="dots" type="button" aria-label="전체 메뉴(미구현)"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="메인 메뉴">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a class="nav-link" data-nav="intro" href="index.html">서비스 소개</a></li>
+        <li><a class="nav-link" data-nav="notice" href="notice.html">공지사항</a></li>
+        <li><a class="nav-link" data-nav="apply" href="college-apply.html">자료생성 및 신청</a></li>
+        <li><a class="nav-link" data-nav="status" href="college-receive-status.html">대학별 수신 현황</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page-wrap">
+    <div class="container">
+      <div class="panel">
+        <h1 style="margin:0 0 6px; font-size:22px; font-weight:900;">대학별 수신 현황</h1>
+        <div style="color:var(--muted); font-weight:800;">studentId 기준으로 provide_code 수신(대학 제공) 이력을 조회합니다.</div>
+
+        <div style="margin-top:14px;">
+          <div class="form-row">
+            <input id="studentId" placeholder="studentId (예: S0000000000000000001)" />
+            <button class="btn" id="btnLoad" type="button">조회</button>
+          </div>
+          <div id="status" class="status">studentId 입력 후 조회하세요.</div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:170px;">provide_code</th>
+                <th style="width:140px;">대학</th>
+                <th style="width:160px;">전공</th>
+                <th style="width:160px;">요청일시</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/apply.js"></script>
+  <script>
+    setActiveNav('status');
+    function qs(name){ return new URLSearchParams(location.search).get(name) || ''; }
+
+    const $studentId = document.getElementById('studentId');
+    const $status = document.getElementById('status');
+    const $tbody = document.getElementById('tbody');
+    $studentId.value = qs('studentId');
+
+    async function load(){
+      const studentId = $studentId.value.trim();
+      if(!studentId){ $status.className='status error'; $status.textContent='studentId는 필수입니다.'; return; }
+      $status.className='status'; $status.textContent='조회 중...';
+      $tbody.innerHTML='';
+
+      const data = await fetchJsonSafe('api/college-receive-status?studentId=' + encodeURIComponent(studentId));
+      if(!data.ok){ $status.className='status error'; $status.textContent=data.message || '조회 실패'; return; }
+      const rows = data.rows || [];
+      $status.className='status'; $status.textContent=`조회 완료: ${rows.length}건`;
+      if(rows.length===0){ $tbody.innerHTML='<tr><td colspan="4" style="color:var(--muted); font-weight:800;">데이터가 없습니다.</td></tr>'; return; }
+      $tbody.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.provideCode}</td>
+          <td>${r.college}</td>
+          <td>${r.major}</td>
+          <td>${r.reqDate}</td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('btnLoad').addEventListener('click', load);
+  </script>
+</body>
+</html>
+
+

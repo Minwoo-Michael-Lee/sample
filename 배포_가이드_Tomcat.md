@@ -108,6 +108,18 @@ Tomcat은 보통 `webapps/` 아래 WAR 파일명을 기준으로 **컨텍스트 
 
 > “루트(/)로 바로 서비스”하고 싶으면 `ROOT.war`로 배포하거나, Tomcat 설정으로 컨텍스트를 ROOT로 맞추는 방식이 있습니다(운영 단계에서 적용).
 
+### (추가) 도메인이 다른 “별도 사이트”를 같은 Tomcat에 같이 올리는 방법 (대입지원 분리)
+
+대입지원은 학부모서비스(`parents.neis...`)와 **도메인이 다르므로 별도 WAR로 분리**해서 배포합니다.
+
+- **학부모서비스**: `neis-parents-service.war` → 컨텍스트 `/neis-parents-service`
+- **대입지원**: `apply-app.war` → 컨텍스트 `/apply-app`
+
+운영에서는 Nginx에서 **Host(도메인)** 기준으로 서로 다른 컨텍스트로 프록시하면 됩니다.
+
+- `parents.example.com` → `http://127.0.0.1:8080/neis-parents-service/`
+- `apply.example.com` → `http://127.0.0.1:8080/apply-app/`
+
 ---
 
 ## 5) 정적 파일(HTML/CSS/JS) 경로는 어떻게 잡나요?

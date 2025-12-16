@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대입지원용 학교생활기록부 신청 서비스</title>
+  <link rel="stylesheet" href="css/apply.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="brand-title" href="index.html">대입지원용 학교생활기록부 신청 서비스</a>
+        <div class="top-actions">
+          <button class="btn-login" type="button" onclick="location.href='login.html'">로그인</button>
+          <button class="dots" type="button" aria-label="전체 메뉴(미구현)"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="메인 메뉴">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a class="nav-link" data-nav="intro" href="index.html">서비스 소개</a></li>
+        <li><a class="nav-link" data-nav="notice" href="notice.html">공지사항</a></li>
+        <li><a class="nav-link" data-nav="apply" href="college-apply.html">자료생성 및 신청</a></li>
+        <li><a class="nav-link" data-nav="status" href="college-receive-status.html">대학별 수신 현황</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="hero">
+    <div class="container">
+      <section class="hero-box" aria-label="서비스 소개 배너">
+        <div class="hero-inner">
+          <div>
+            <div class="hero-badge">대입지원용 학교생활기록부 신청 서비스</div>
+            <h1 class="hero-title">대입전형자료(학교생활기록부) 온라인 생성신청</h1>
+
+            <div class="hero-desc">
+              <div class="row">
+                <div class="tag">서비스개요</div>
+                <div>대입지원용 학교생활기록부를 신청하여 지원대학에 온라인으로 제출하는 서비스입니다.</div>
+              </div>
+              <div class="row">
+                <div class="tag">이용대상</div>
+                <div>예시) 2005년 2월 ~ 2021년 2월 고등학교 졸업자</div>
+              </div>
+              <div class="row">
+                <div class="tag">신청기간</div>
+                <div>예시) (정시) 12.16 ~ 12.31 18:00 / (수시) 08.25 ~ 09.05 18:00</div>
+              </div>
+            </div>
+
+            <div class="hero-cta">
+              <button class="btn-primary" type="button" onclick="location.href='college-apply.html'">자료생성 및 신청</button>
+            </div>
+          </div>
+
+          <div class="hero-art" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section class="grid2" aria-label="바로가기 및 공지">
+        <a class="card" href="college-apply.html">
+          <div>
+            <strong>자료생성 및 신청</strong>
+            <p>대입전형자료(학교생활기록부) 온라인 생성신청</p>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+
+        <div class="notice">
+          <div class="notice-header">
+            <div class="notice-title"><span class="dot-blue"></span>공지사항</div>
+            <a class="more" href="notice.html">더보기</a>
+          </div>
+          <ul class="notice-list">
+            <li class="notice-item">
+              <div>예시 공지: 서비스 이용 안내</div>
+              <div class="date">2025.12.16</div>
+            </li>
+            <li class="notice-item">
+              <div>예시 공지: 자료생성 신청 절차</div>
+              <div class="date">2025.12.10</div>
+            </li>
+            <li class="notice-item">
+              <div>예시 공지: FAQ 업데이트</div>
+              <div class="date">2025.11.20</div>
+            </li>
+          </ul>
+        </div>
+
+        <a class="card" href="college-receive-status.html">
+          <div>
+            <strong>대학별 수신 현황</strong>
+            <p>제출한 대입전형자료를 수신한 대학의 현황</p>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="card" href="college-receive-status.html">
+          <div>
+            <strong>대학별 수신 현황(바로가기)</strong>
+            <p>provide_code 기준 수신 내역 확인</p>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/apply.js"></script>
+  <script>setActiveNav('intro');</script>
+</body>
+</html>
+
+
