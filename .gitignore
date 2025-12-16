@@ -1,0 +1,17 @@
+target/
+*.class
+*.log
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS
+desktop.ini
+

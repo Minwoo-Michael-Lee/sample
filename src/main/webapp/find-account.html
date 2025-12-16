@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID/PW 찾기 - 나이스 대국민 학부모서비스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .find-page {
+            min-height: calc(100vh - 64px);
+            background: linear-gradient(135deg, #e4f0ff 0%, #c8e1ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        
+        .find-container {
+            background: #fff;
+            border-radius: 15px;
+            padding: 50px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .find-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .find-header h1 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .find-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .find-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .find-tab {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #666;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .find-tab.active {
+            color: #333;
+            border-bottom-color: #333;
+            font-weight: bold;
+        }
+        
+        .find-tab-content {
+            display: none;
+        }
+        
+        .find-tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #4176e9;
+            box-shadow: 0 0 0 3px rgba(65,118,233,0.1);
+        }
+        
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+        
+        .btn-find {
+            width: 100%;
+            padding: 15px;
+            background: #4176e9;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-find:hover {
+            background: #2d5aa0;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #4176e9;
+        }
+        
+        .result-box {
+            display: none;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .result-box.show {
+            display: block;
+        }
+        
+        .result-box.success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .result-box.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .result-box h3 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .result-box p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- ID/PW 찾기 페이지: 최상단 로고만 -->
+    <header>
+        <div class="header-top">
+            <div class="container">
+                <div class="header-inner">
+                    <a href="index.html" class="logo">나이스 대국민 학부모서비스</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="find-page">
+        <div class="find-container">
+            <a href="index.html" class="back-link">← 메인으로</a>
+            <div class="find-header">
+                <h1>ID/PW 찾기</h1>
+                <p>가입 시 입력한 정보로 찾을 수 있습니다</p>
+            </div>
+            
+            <div class="find-tabs">
+                <button class="find-tab active" onclick="switchTab('id')">ID 찾기</button>
+                <button class="find-tab" onclick="switchTab('pw')">PW 변경</button>
+            </div>
+            
+            <!-- ID 찾기 -->
+            <div id="findIdTab" class="find-tab-content active">
+                <form id="findIdForm" onsubmit="handleFindId(event)">
+                    <div class="form-group">
+                        <label for="findIdName">이름</label>
+                        <input type="text" id="findIdName" name="name" required placeholder="이름을 입력하세요">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="findIdPhone">전화번호</label>
+                        <input type="tel" id="findIdPhone" name="phone" required placeholder="010-1234-5678" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}">
+                        <small>가입 시 등록한 전화번호를 입력하세요</small>
+                    </div>
+                    
+                    <button type="submit" class="btn-find">ID 찾기</button>
+                </form>
+                
+                <div id="findIdResult" class="result-box"></div>
+            </div>
+            
+            <!-- PW 변경 -->
+            <div id="findPwTab" class="find-tab-content">
+                <form id="findPwForm" onsubmit="handleFindPw(event)">
+                    <div class="form-group">
+                        <label for="findPwUserId">아이디</label>
+                        <input type="text" id="findPwUserId" name="userId" required placeholder="아이디를 입력하세요">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="findPwName">이름</label>
+                        <input type="text" id="findPwName" name="name" required placeholder="이름을 입력하세요">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="findPwPhone">전화번호</label>
+                        <input type="tel" id="findPwPhone" name="phone" required placeholder="010-1234-5678" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}">
+                        <small>가입 시 등록한 전화번호를 입력하세요</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">새 비밀번호</label>
+                        <input type="password" id="newPassword" name="newPassword" required placeholder="새 비밀번호를 입력하세요" minlength="8">
+                        <small>8자 이상 영문, 숫자, 특수문자 조합</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPasswordConfirm">새 비밀번호 확인</label>
+                        <input type="password" id="newPasswordConfirm" name="newPasswordConfirm" required placeholder="새 비밀번호를 다시 입력하세요">
+                        <div class="error-message" id="passwordConfirmError"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn-find">비밀번호 변경</button>
+                </form>
+                
+                <div id="findPwResult" class="result-box"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                <a href="login.html" style="color: #666; text-decoration: none; font-size: 0.9rem;">로그인으로 돌아가기</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tab) {
+            // 탭 버튼 활성화
+            document.querySelectorAll('.find-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // 탭 컨텐츠 전환
+            document.getElementById('findIdTab').classList.remove('active');
+            document.getElementById('findPwTab').classList.remove('active');
+            
+            if (tab === 'id') {
+                document.getElementById('findIdTab').classList.add('active');
+            } else {
+                document.getElementById('findPwTab').classList.add('active');
+            }
+            
+            // 결과 박스 초기화
+            document.getElementById('findIdResult').classList.remove('show', 'success', 'error');
+            document.getElementById('findPwResult').classList.remove('show', 'success', 'error');
+        }
+        
+        // 비밀번호 확인 검증
+        document.getElementById('newPasswordConfirm').addEventListener('input', function() {
+            const newPassword = document.getElementById('newPassword').value;
+            const newPasswordConfirm = this.value;
+            const errorDiv = document.getElementById('passwordConfirmError');
+            
+            if (newPasswordConfirm && newPassword !== newPasswordConfirm) {
+                errorDiv.textContent = '비밀번호가 일치하지 않습니다.';
+                errorDiv.classList.add('show');
+            } else {
+                errorDiv.classList.remove('show');
+            }
+        });
+        
+        function handleFindId(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('findIdName').value;
+            const phone = document.getElementById('findIdPhone').value;
+            const resultBox = document.getElementById('findIdResult');
+            
+            // TODO: 실제 API 호출
+            console.log('ID 찾기 시도:', { name, phone });
+            
+            // 임시 결과 표시
+            resultBox.innerHTML = `
+                <h3>ID 찾기 결과</h3>
+                <p>ID 찾기 기능은 백엔드 연동 후 사용 가능합니다.</p>
+            `;
+            resultBox.classList.add('show', 'error');
+            
+            // 실제로는 API 응답을 받아서 처리
+            // fetch('/api/auth/find-id', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ name, phone })
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     if (data.success) {
+            //         resultBox.innerHTML = `
+            //             <h3>ID 찾기 결과</h3>
+            //             <p>회원님의 ID는 <strong>${data.userId}</strong> 입니다.</p>
+            //         `;
+            //         resultBox.classList.add('show', 'success');
+            //     } else {
+            //         resultBox.innerHTML = `
+            //             <h3>ID 찾기 실패</h3>
+            //             <p>${data.message || '일치하는 정보가 없습니다.'}</p>
+            //         `;
+            //         resultBox.classList.add('show', 'error');
+            //     }
+            // });
+        }
+        
+        function handleFindPw(event) {
+            event.preventDefault();
+            
+            const userId = document.getElementById('findPwUserId').value;
+            const name = document.getElementById('findPwName').value;
+            const phone = document.getElementById('findPwPhone').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const newPasswordConfirm = document.getElementById('newPasswordConfirm').value;
+            const resultBox = document.getElementById('findPwResult');
+            
+            // 비밀번호 확인
+            if (newPassword !== newPasswordConfirm) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            
+            // TODO: 실제 API 호출
+            console.log('PW 변경 시도:', { userId, name, phone, newPassword });
+            
+            // 임시 결과 표시
+            resultBox.innerHTML = `
+                <h3>비밀번호 변경 결과</h3>
+                <p>비밀번호 변경 기능은 백엔드 연동 후 사용 가능합니다.</p>
+            `;
+            resultBox.classList.add('show', 'error');
+            
+            // 실제로는 API 응답을 받아서 처리
+            // fetch('/api/auth/reset-pw', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ userId, name, phone, newPassword })
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     if (data.success) {
+            //         resultBox.innerHTML = `
+            //             <h3>비밀번호 변경 완료</h3>
+            //             <p>비밀번호가 성공적으로 변경되었습니다.</p>
+            //             <p><a href="/login" style="color: #4176e9;">로그인 페이지로 이동</a></p>
+            //         `;
+            //         resultBox.classList.add('show', 'success');
+            //     } else {
+            //         resultBox.innerHTML = `
+            //             <h3>비밀번호 변경 실패</h3>
+            //             <p>${data.message || '일치하는 정보가 없습니다.'}</p>
+            //         `;
+            //         resultBox.classList.add('show', 'error');
+            //     }
+            // });
+        }
+    </script>
+</body>
+</html>
+

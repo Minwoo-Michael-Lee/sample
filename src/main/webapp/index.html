@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나이스 대국민 학부모서비스</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        * {
+            font-family: "Noto Sans KR", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #eaf0f6;
+            color: #232323;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .header-top {
+            padding: 12px 0;
+        }
+        
+        .header-bottom {
+            border-top: 1px solid #eee;
+            padding: 0;
+        }
+        
+        .header-inner {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0;
+            width: 100%;
+        }
+        
+        .logo {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            padding: 10px 0;
+        }
+        
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 0;
+            background: #fff;
+        }
+        
+        .nav-tab {
+            padding: 12px 25px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #333;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-tab:hover {
+            color: #333;
+            border-bottom-color: #333;
+        }
+        
+        .nav-tab.active {
+            color: #333;
+            border-bottom-color: #333;
+            font-weight: bold;
+        }
+        
+        .nav-tab-wrapper {
+            position: relative;
+        }
+        
+        .nav-tab-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: transparent;
+        }
+        
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 0;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            min-width: 800px;
+            padding: 30px;
+        }
+        
+        .nav-tab-wrapper:hover .nav-menu,
+        .nav-menu:hover {
+            display: block;
+        }
+        
+        .nav-menu.show {
+            display: block;
+        }
+        
+        .nav-menu-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .nav-menu-column h4 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .nav-menu-column ul {
+            list-style: none;
+        }
+        
+        .nav-menu-column li {
+            margin-bottom: 10px;
+        }
+        
+        .nav-menu-column a {
+            color: #333;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            display: block;
+            padding: 5px 0;
+        }
+        
+        .nav-menu-column a:hover {
+            color: #333;
+            padding-left: 5px;
+        }
+        
+        
+        /* Main Banner Section */
+        .main-banner {
+            background: linear-gradient(135deg, #e4f0ff 0%, #c8e1ff 100%);
+            padding: 60px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .banner-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .banner-left {
+            position: relative;
+        }
+        
+        .banner-illustration {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .banner-illustration img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .banner-right {
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .login-panel h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .btn-login-main {
+            width: 100%;
+            padding: 15px;
+            background: #4176e9;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-login-main:hover {
+            background: #2d5aa0;
+        }
+        
+        .btn-join-main {
+            width: 100%;
+            padding: 15px;
+            background: #fff;
+            border: 2px solid #4176e9;
+            border-radius: 8px;
+            color: #4176e9;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-join-main:hover {
+            background: #f8f9ff;
+        }
+        
+        /* Service Section */
+        .service-section {
+            padding: 50px 0;
+            background: #fff;
+        }
+        
+        .service-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+        }
+        
+        .service-intro h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .service-intro p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .service-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .service-tab {
+            padding: 10px 20px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #666;
+        }
+        
+        .service-tab.active {
+            background: #4176e9;
+            color: #fff;
+        }
+        
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .service-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            border-color: #4176e9;
+            box-shadow: 0 4px 12px rgba(65,118,233,0.15);
+            transform: translateY(-3px);
+        }
+        
+        .service-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #4176e9;
+        }
+        
+        .service-card-text {
+            font-size: 0.9rem;
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        /* Board Section */
+        .board-section {
+            padding: 50px 0;
+            background: #fff;
+        }
+        
+        .board-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .board-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+        }
+        
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .board-header h3 {
+            font-size: 1.2rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .board-list {
+            list-style: none;
+        }
+        
+        .board-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .board-item:last-child {
+            border-bottom: none;
+        }
+        
+        .board-item-icon {
+            color: #4176e9;
+            font-weight: bold;
+        }
+        
+        .board-item-text {
+            flex: 1;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .board-item-date {
+            color: #999;
+            font-size: 0.85rem;
+        }
+        
+        /* Alert Board */
+        .alert-board {
+            background: #4176e9;
+            padding: 40px 0;
+            color: #fff;
+        }
+        
+        .alert-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .alert-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .alert-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            color: #333;
+            min-height: 250px;
+        }
+        
+        .alert-card-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #4176e9;
+        }
+        
+        /* Footer */
+        footer {
+            background: #2d3f47;
+            color: #fff;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #444;
+            margin-bottom: 30px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .footer-info {
+            text-align: right;
+        }
+        
+        .footer-info-title {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .footer-info-tel {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .footer-info-time {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 1024px) {
+            .banner-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .alert-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-left {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .service-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .board-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                min-width: 100%;
+                left: 0;
+            }
+            
+            .nav-menu-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="container">
+                <div class="header-inner">
+                    <a href="index.html" class="logo">나이스 대국민 학부모서비스</a>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <div class="container">
+                <nav class="primary-nav" aria-label="주요 메뉴">
+                    <ul class="primary-nav-list">
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">학교정보</button>
+                            <div class="primary-dropdown" role="menu" aria-label="학교정보 메뉴">
+                                <a href="school-info.html" role="menuitem">학교기본정보</a>
+                                <a href="school-diet.html" role="menuitem">주간식단</a>
+                            </div>
+                        </li>
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">학교생활기록부</button>
+                            <div class="primary-dropdown" role="menu" aria-label="학교생활기록부 메뉴">
+                                <a href="student-record.html" role="menuitem">조회</a>
+                                <a href="student-attendance.html" role="menuitem">출결상황</a>
+                                <a href="student-volunteer.html" role="menuitem">봉사활동실적</a>
+                            </div>
+                        </li>
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">자녀평가</button>
+                            <div class="primary-dropdown" role="menu" aria-label="자녀평가 메뉴">
+                                <a href="student-grades.html" role="menuitem">성적표</a>
+                                <a href="student-grade-trend.html" role="menuitem">성적변화표</a>
+                                <a href="student-standard-score.html" role="menuitem">표준점수분석표</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Banner -->
+    <section class="main-banner">
+        <div class="container">
+            <div class="banner-content">
+                <div class="banner-left">
+                    <div class="banner-illustration">
+                        <img src="images/banner-img2.png" alt="나이스 학부모서비스" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="banner-right">
+                    <div class="login-panel">
+                        <button class="btn-login-main" onclick="location.href='login.html'">
+                            로그인
+                        </button>
+                        <button class="btn-join-main" onclick="location.href='register.html'">
+                            회원가입
+                        </button>
+                        <div style="margin-top: 20px; text-align: center;">
+                            <a href="find-account.html" style="color: #666; text-decoration: none; font-size: 0.9rem;">
+                                ID/PW 찾기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <span style="font-weight: bold;">교육부</span>
+                    <span style="font-weight: bold;">17개 시도교육청</span>
+                    <span style="font-weight: bold;">KERIS</span>
+                </div>
+                <div class="footer-info">
+                    <div class="footer-info-title">중앙상담센터 번호 안내</div>
+                    <div class="footer-info-tel">1600-7440 (대국민 서비스)</div>
+                    <div class="footer-info-time">운영시간 : 08:00 ~ 18:00 평일(월-금, 주말 및 공휴일 제외)</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
+                COPYRIGHT ⓒ MINISTRY OF EDUCATION. ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

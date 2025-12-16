@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - 나이스 대국민 학부모서비스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .register-page {
+            min-height: calc(100vh - 64px);
+            background: linear-gradient(135deg, #e4f0ff 0%, #c8e1ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        
+        .register-container {
+            background: #fff;
+            border-radius: 15px;
+            padding: 50px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .register-header h1 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .register-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .form-group label.required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4176e9;
+            box-shadow: 0 0 0 3px rgba(65,118,233,0.1);
+        }
+        
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+        
+        .agreement-box {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .agreement-item {
+            margin-bottom: 15px;
+        }
+        
+        .agreement-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .agreement-item label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .agreement-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .agreement-item a {
+            color: #4176e9;
+            text-decoration: none;
+        }
+        
+        .agreement-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn-register {
+            width: 100%;
+            padding: 15px;
+            background: #4176e9;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-register:hover {
+            background: #2d5aa0;
+        }
+        
+        .btn-register:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #4176e9;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- 회원가입 페이지: 최상단 로고만 -->
+    <header>
+        <div class="header-top">
+            <div class="container">
+                <div class="header-inner">
+                    <a href="index.html" class="logo">나이스 대국민 학부모서비스</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="register-page">
+        <div class="register-container">
+            <a href="index.html" class="back-link">← 메인으로</a>
+            <div class="register-header">
+                <h1>회원가입</h1>
+                <p>나이스 대국민 학부모서비스에 가입하세요</p>
+            </div>
+            
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="userId" class="required">아이디</label>
+                    <input type="text" id="userId" name="userId" required placeholder="아이디를 입력하세요" minlength="4" maxlength="20">
+                    <small>4-20자 영문, 숫자 조합</small>
+                    <div class="error-message" id="userIdError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="required">비밀번호</label>
+                    <input type="password" id="password" name="password" required placeholder="비밀번호를 입력하세요" minlength="8">
+                    <small>8자 이상 영문, 숫자, 특수문자 조합</small>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="passwordConfirm" class="required">비밀번호 확인</label>
+                    <input type="password" id="passwordConfirm" name="passwordConfirm" required placeholder="비밀번호를 다시 입력하세요">
+                    <div class="error-message" id="passwordConfirmError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name" class="required">이름</label>
+                    <input type="text" id="name" name="name" required placeholder="이름을 입력하세요">
+                    <div class="error-message" id="nameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="required">전화번호</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="010-1234-5678" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}">
+                    <small>하이픈(-) 포함하여 입력하세요</small>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="moeCode" class="required">교육청</label>
+                    <select id="moeCode" name="moeCode" required>
+                        <option value="">교육청을 선택하세요</option>
+                        <option value="100000">서울특별시교육청</option>
+                        <option value="200000">부산광역시교육청</option>
+                        <option value="300000">대구광역시교육청</option>
+                        <option value="400000">인천광역시교육청</option>
+                        <option value="500000">광주광역시교육청</option>
+                        <option value="600000">대전광역시교육청</option>
+                        <option value="700000">울산광역시교육청</option>
+                        <option value="800000">세종특별자치시교육청</option>
+                        <option value="900000">경기도교육청</option>
+                        <option value="1000000">강원도교육청</option>
+                        <option value="1100000">충청북도교육청</option>
+                        <option value="1200000">충청남도교육청</option>
+                        <option value="1300000">전라북도교육청</option>
+                        <option value="1400000">전라남도교육청</option>
+                        <option value="1500000">경상북도교육청</option>
+                        <option value="1600000">경상남도교육청</option>
+                        <option value="1700000">제주특별자치도교육청</option>
+                    </select>
+                    <div class="error-message" id="moeCodeError"></div>
+                </div>
+                
+                <div class="agreement-box">
+                    <div class="agreement-item">
+                        <label>
+                            <input type="checkbox" id="agreeAll" onchange="toggleAllAgreements()">
+                            <span>전체 동의</span>
+                        </label>
+                    </div>
+                    <div class="agreement-item">
+                        <label>
+                            <input type="checkbox" id="agreeService" class="agreement-checkbox" required>
+                            <span><a href="/terms" target="_blank">이용약관</a> 동의 (필수)</span>
+                        </label>
+                    </div>
+                    <div class="agreement-item">
+                        <label>
+                            <input type="checkbox" id="agreePrivacy" class="agreement-checkbox" required>
+                            <span><a href="/privacy" target="_blank">개인정보 처리방침</a> 동의 (필수)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-register" id="registerBtn">회원가입</button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                <a href="login.html" style="color: #666; text-decoration: none; font-size: 0.9rem;">이미 계정이 있으신가요? 로그인</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleAllAgreements() {
+            const agreeAll = document.getElementById('agreeAll');
+            const checkboxes = document.querySelectorAll('.agreement-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = agreeAll.checked;
+            });
+        }
+        
+        // 개별 체크박스 변경 시 전체 동의 체크박스 상태 업데이트
+        document.querySelectorAll('.agreement-checkbox').forEach(cb => {
+            cb.addEventListener('change', function() {
+                const allChecked = Array.from(document.querySelectorAll('.agreement-checkbox')).every(c => c.checked);
+                document.getElementById('agreeAll').checked = allChecked;
+            });
+        });
+        
+        // 비밀번호 확인 검증
+        document.getElementById('passwordConfirm').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const passwordConfirm = this.value;
+            const errorDiv = document.getElementById('passwordConfirmError');
+            
+            if (passwordConfirm && password !== passwordConfirm) {
+                errorDiv.textContent = '비밀번호가 일치하지 않습니다.';
+                errorDiv.classList.add('show');
+            } else {
+                errorDiv.classList.remove('show');
+            }
+        });
+        
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            const formData = {
+                userId: document.getElementById('userId').value,
+                password: document.getElementById('password').value,
+                passwordConfirm: document.getElementById('passwordConfirm').value,
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                moeCode: document.getElementById('moeCode').value,
+                agreeService: document.getElementById('agreeService').checked,
+                agreePrivacy: document.getElementById('agreePrivacy').checked
+            };
+            
+            // 비밀번호 확인
+            if (formData.password !== formData.passwordConfirm) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            
+            // 필수 동의 확인
+            if (!formData.agreeService || !formData.agreePrivacy) {
+                alert('필수 약관에 동의해주세요.');
+                return;
+            }
+            
+            // TODO: 실제 API 호출
+            console.log('회원가입 시도:', formData);
+            
+            // 임시: 회원가입 성공 시 로그인 페이지로 이동
+            // 실제로는 API 응답을 받아서 처리
+            // fetch('/api/auth/register', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     if (data.success) {
+            //         alert('회원가입이 완료되었습니다.');
+            //         window.location.href = '/login';
+            //     } else {
+            //         alert(data.message || '회원가입에 실패했습니다.');
+            //     }
+            // });
+            
+            alert('회원가입 기능은 백엔드 연동 후 사용 가능합니다.');
+        }
+    </script>
+</body>
+</html>
+

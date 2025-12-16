@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주간식단 - 나이스 대국민 학부모서비스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #e4f0ff 0%, #c8e1ff 100%);
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .week-selector {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .week-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .btn-week {
+            padding: 8px 15px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-week:hover {
+            background: #e9ecef;
+        }
+        
+        .btn-week.active {
+            background: #4176e9;
+            color: #fff;
+            border-color: #4176e9;
+        }
+        
+        .diet-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .diet-table th {
+            background: #4176e9;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .diet-table td {
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+        
+        .diet-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .diet-date {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .diet-menu {
+            margin-bottom: 10px;
+        }
+        
+        .diet-menu-item {
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .diet-allergy {
+            font-size: 0.85rem;
+            color: #e74c3c;
+            margin-top: 5px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #4176e9;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="container">
+                <div class="header-inner">
+                    <a href="index.html" class="logo">나이스 대국민 학부모서비스</a>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <div class="container">
+                <nav class="primary-nav" aria-label="주요 메뉴">
+                    <ul class="primary-nav-list">
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">학교정보</button>
+                            <div class="primary-dropdown" role="menu" aria-label="학교정보 메뉴">
+                                <a href="school-info.html" role="menuitem">학교기본정보</a>
+                                <a href="school-diet.html" role="menuitem">주간식단</a>
+                            </div>
+                        </li>
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">학교생활기록부</button>
+                            <div class="primary-dropdown" role="menu" aria-label="학교생활기록부 메뉴">
+                                <a href="student-record.html" role="menuitem">조회</a>
+                                <a href="student-attendance.html" role="menuitem">출결상황</a>
+                                <a href="student-volunteer.html" role="menuitem">봉사활동실적</a>
+                            </div>
+                        </li>
+                        <li class="primary-nav-item">
+                            <button type="button" class="primary-nav-link">자녀평가</button>
+                            <div class="primary-dropdown" role="menu" aria-label="자녀평가 메뉴">
+                                <a href="student-grades.html" role="menuitem">성적표</a>
+                                <a href="student-grade-trend.html" role="menuitem">성적변화표</a>
+                                <a href="student-standard-score.html" role="menuitem">표준점수분석표</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <a href="index.html" class="back-link">← 메인으로</a>
+            <h1>주간식단</h1>
+            <p>자녀가 다니는 학교의 주간 급식 식단을 확인하실 수 있습니다</p>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <div class="container">
+        <div class="week-selector">
+            <div class="week-nav">
+                <button class="btn-week" onclick="changeWeek(-1)">◀ 이전 주</button>
+                <span id="currentWeek" style="font-weight: bold; padding: 0 20px;">2025년 12월 16일 ~ 12월 20일</span>
+                <button class="btn-week" onclick="changeWeek(1)">다음 주 ▶</button>
+            </div>
+        </div>
+
+        <table class="diet-table">
+            <thead>
+                <tr>
+                    <th style="width: 120px;">요일</th>
+                    <th>식단</th>
+                </tr>
+            </thead>
+            <tbody id="dietTableBody">
+                <tr>
+                    <td class="diet-date">월요일<br>12/16</td>
+                    <td>
+                        <div class="diet-menu">
+                            <div class="diet-menu-item">🍚 현미밥</div>
+                            <div class="diet-menu-item">🥘 된장찌개</div>
+                            <div class="diet-menu-item">🍖 제육볶음</div>
+                            <div class="diet-menu-item">🥬 시금치나물</div>
+                            <div class="diet-menu-item">🥒 오이무침</div>
+                        </div>
+                        <div class="diet-allergy">알레르기 정보: 대두, 돼지고기</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="diet-date">화요일<br>12/17</td>
+                    <td>
+                        <div class="diet-menu">
+                            <div class="diet-menu-item">🍚 백미밥</div>
+                            <div class="diet-menu-item">🍲 김치찌개</div>
+                            <div class="diet-menu-item">🐟 고등어조림</div>
+                            <div class="diet-menu-item">🥕 당근볶음</div>
+                            <div class="diet-menu-item">🥗 배추김치</div>
+                        </div>
+                        <div class="diet-allergy">알레르기 정보: 생선, 갑각류</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="diet-date">수요일<br>12/18</td>
+                    <td>
+                        <div class="diet-menu">
+                            <div class="diet-menu-item">🍚 잡곡밥</div>
+                            <div class="diet-menu-item">🍜 우동</div>
+                            <div class="diet-menu-item">🍗 치킨너겟</div>
+                            <div class="diet-menu-item">🥒 단무지</div>
+                            <div class="diet-menu-item">🍎 사과</div>
+                        </div>
+                        <div class="diet-allergy">알레르기 정보: 밀, 계란, 닭고기</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="diet-date">목요일<br>12/19</td>
+                    <td>
+                        <div class="diet-menu">
+                            <div class="diet-menu-item">🍚 현미밥</div>
+                            <div class="diet-menu-item">🍲 부대찌개</div>
+                            <div class="diet-menu-item">🥩 불고기</div>
+                            <div class="diet-menu-item">🥬 콩나물무침</div>
+                            <div class="diet-menu-item">🥗 깍두기</div>
+                        </div>
+                        <div class="diet-allergy">알레르기 정보: 대두, 쇠고기</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="diet-date">금요일<br>12/20</td>
+                    <td>
+                        <div class="diet-menu">
+                            <div class="diet-menu-item">🍚 백미밥</div>
+                            <div class="diet-menu-item">🍲 미역국</div>
+                            <div class="diet-menu-item">🍤 새우튀김</div>
+                            <div class="diet-menu-item">🥕 오이부추무침</div>
+                            <div class="diet-menu-item">🍌 바나나</div>
+                        </div>
+                        <div class="diet-allergy">알레르기 정보: 갑각류, 밀</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-links">
+                    <a href="/privacy">개인정보 처리방침</a>
+                    <a href="/terms">이용약관</a>
+                    <a href="/help">사용문의</a>
+                </div>
+                <a href="/help" style="color: #fff; text-decoration: none;">온라인 도움말 ></a>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <span style="font-weight: bold;">교육부</span>
+                    <span style="font-weight: bold;">17개 시도교육청</span>
+                    <span style="font-weight: bold;">KERIS</span>
+                </div>
+                <div class="footer-info">
+                    <div class="footer-info-title">중앙상담센터 번호 안내</div>
+                    <div class="footer-info-tel">1600-7440 (대국민 서비스)</div>
+                    <div class="footer-info-time">운영시간 : 08:00 ~ 18:00 평일(월-금, 주말 및 공휴일 제외)</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
+                COPYRIGHT ⓒ MINISTRY OF EDUCATION. ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        function changeWeek(direction) {
+            // TODO: 실제 API 호출로 주 변경
+            console.log('주 변경:', direction);
+            // 현재 주 표시 업데이트
+        }
+    </script>
+</body>
+</html>
+
